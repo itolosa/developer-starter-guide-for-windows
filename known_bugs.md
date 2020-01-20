@@ -17,8 +17,7 @@ La configuración inicial no permite guardar los permisos de los archivos creado
 Pero existe una forma de mantenerlos y es creando un archivo llamado wsl.conf y agregando un contenido similar a este:
 ```
 [automount]
-root = /mnt/
-options = metadata, umask=022
+options =  "metadata,umask=22,fmask=11"
 ```
 La opcion metadata permite toda esta magia de guardar los permisos. Umask=022 configura el umask por defecto a 022.
 
@@ -31,7 +30,7 @@ Pero Por que ocurre esto?
 Esto es debido a la forma de inicio de la sesión de shell que entrega WSL. 
 En Linux se usa /bin/login para darte una sesión. Este programa setea el umask a 002 por defecto,
 ademas de realizar otras inicializaciones. Sin embargo, en windows no se utiliza ese mecanismo,
-principalmente, como lo indican sus desarrolladores, debido a que supuestamente genera inestabilidad.
+principalmente, como lo indican sus desarrolladores, debido a que genera inestabilidad.
 En su lugar, han creado un sistema que emula la inicialización de /bin/login pero
 al parecer aún no esta muy completo.
 
@@ -41,7 +40,7 @@ wsl.exe -u root -- /bin/login -f username
 ```
 Donde `username` es tu nombre de usuario
 
-Ahora, si te preocupa la supuesta inestabilidad que genera `/bin/login` no esta mal agregar el comando `umask 002` en cualquiera de estos archivos:
+Ahora, si te preocupa la inestabilidad que genera `/bin/login` no esta mal agregar el comando `umask 002` en cualquiera de estos archivos:
 ```
 /etc/profiles
 ~/.profile
